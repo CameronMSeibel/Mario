@@ -1,0 +1,107 @@
+import com.radirius.mercury.graphics.Color;
+import com.radirius.mercury.graphics.Graphics;
+import com.radirius.mercury.input.Input;
+import com.radirius.mercury.math.geometry.Rectangle;
+import com.radirius.mercury.scene.GameObject;
+
+
+public class Player extends GameObject{
+	
+	private Rectangle sprite;
+	private int x = 400;
+	private int y = 300;
+	private int jumpHeight = 200;
+	private int endHeight;
+	private boolean inAir = false;
+	private boolean jumping = false;
+	
+	public Player()
+	{
+		sprite = new Rectangle(x, y, 100, 100);
+	}
+	
+	public void update()
+	{
+		if(jumping)
+		{
+			jumpUpdate(endHeight);
+		}
+		else
+		{
+			fall();
+			if(Input.keyDown(Input.KEY_RIGHT))
+			{
+				moveRight();
+			}
+			if(Input.keyDown(Input.KEY_LEFT))
+			{
+				moveLeft();
+			}
+			if(Input.keyClicked(Input.KEY_UP))
+			{
+				if(!inAir)
+				{
+					jump(-jumpHeight + y);
+				}
+			}
+		}
+	}
+	
+	public void render(Graphics g)
+	{
+		sprite = new Rectangle(x, y, 100, 100);
+		g.setColor(Color.GREEN);
+		g.drawShape(sprite);
+	}
+	
+	private void moveRight()
+	{
+		x += 10;
+	}
+	
+	private void moveLeft()
+	{
+		x -= 10;
+	}
+	
+	private void jump(int height)
+	{
+		endHeight = height;
+		y -= 10;
+		jumping = true;
+	}
+	
+	private void jumpUpdate(int height)
+	{
+		if(Input.keyDown(Input.KEY_RIGHT))
+		{
+			moveRight();
+		}
+		if(Input.keyDown(Input.KEY_LEFT))
+		{
+			moveLeft();
+		}
+		if(y > height)
+		{
+			y -= 10;
+		}
+		else
+		{
+			jumping = false;
+		}
+	}
+	
+	private void fall()
+	{
+		if(y >= 300)
+		{
+			inAir = false;
+			y = 300;
+		}
+		else
+		{
+			inAir = true;
+			y += 10;
+		}
+	}
+}
