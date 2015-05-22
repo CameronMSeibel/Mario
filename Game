@@ -1,0 +1,43 @@
+import com.radirius.mercury.framework.GameState;
+import com.radirius.mercury.graphics.Color;
+import com.radirius.mercury.graphics.Graphics;
+import com.radirius.mercury.input.Input;
+import com.radirius.mercury.math.geometry.Rectangle;
+import com.radirius.mercury.scene.GameScene;
+
+
+public class Game extends GameState{
+	
+	private boolean gameQuit = false;
+	private Rectangle rec = new Rectangle(690, 490, 100, 100);
+	private Player pc = new Player();
+	
+	private GameScene levelOne = new GameScene();
+	
+	public void onEnter()
+	{
+		levelOne.add(pc);
+	}
+	
+	public void update()
+	{
+		pc.update();
+		if(Input.keyClicked(Input.KEY_Q));
+		{
+			gameQuit = true;
+		}
+	}
+	
+	public void render(Graphics g)
+	{
+		levelOne.render(g);
+		g.setColor(Color.YELLOW);
+		g.drawShape(rec);
+	}
+	
+	public boolean shouldGameQuit()
+	{
+		return gameQuit;
+	}
+
+}
