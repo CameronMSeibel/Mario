@@ -1,0 +1,60 @@
+import com.radirius.mercury.framework.GameState;
+import com.radirius.mercury.graphics.Color;
+import com.radirius.mercury.graphics.Graphics;
+import com.radirius.mercury.input.Input;
+import com.radirius.mercury.math.geometry.Rectangle;
+
+
+public class TitleMenu extends GameState{
+	
+	private Rectangle rec = new Rectangle(10, 10, 100, 100);
+	private int menuSelection = 0;
+	private Color[] selections = {Color.RED, Color.BLUE};
+	private int numberOfSelections = selections.length;
+	private boolean startGame = false;
+	private boolean quitGame = false;
+	
+	public TitleMenu()
+	{
+		
+	}
+	
+	public void update()
+	{
+		if(Input.keyClicked(Input.KEY_UP))
+		{
+			menuSelection = Math.abs((menuSelection - 1) % numberOfSelections);
+		}
+		if(Input.keyClicked(Input.KEY_DOWN))
+		{
+			menuSelection = Math.abs((menuSelection + 1) % numberOfSelections);
+		}
+		if(Input.keyClicked(Input.KEY_ENTER))
+		{
+			if(menuSelection == 0)
+			{
+				quitGame = true;
+			}
+			if(menuSelection == 1)
+			{
+				startGame = true;
+			}
+		}
+	}
+	
+	public void render(Graphics g)
+	{
+		g.setColor(selections[menuSelection]);
+		g.drawShape(rec);
+	}
+	
+	public boolean shouldGameStart()
+	{
+		return startGame;
+	}
+	
+	public boolean shouldGameQuit()
+	{
+		return quitGame;
+	}
+}
