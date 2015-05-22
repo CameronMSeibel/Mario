@@ -1,0 +1,53 @@
+import com.radirius.mercury.framework.Core;
+import com.radirius.mercury.framework.CoreSetup;
+import com.radirius.mercury.graphics.Graphics;
+
+
+public class GameWindow extends Core{
+	
+	private static String name = "Game";
+	private static TitleMenu title = new TitleMenu();
+	private static Game game = new Game();
+	
+	public GameWindow(CoreSetup coreSetup) {
+        super(coreSetup);
+    }
+
+    public static void main(String[] args) {
+        CoreSetup coreSetup = new CoreSetup(name);
+        coreSetup.width = 800;
+        coreSetup.height = 600;
+
+        new GameWindow(coreSetup).start();
+        
+    }
+
+    public void init() 
+    {
+    	this.switchGameState(title);
+    }
+
+    public void update() 
+    {
+    	updateState();
+    	if(title.shouldGameStart())
+    	{
+    		this.switchGameState(game);
+    	}
+    	if(title.shouldGameQuit() || game.shouldGameQuit())
+    	{
+    		//this.end(); //This code is causing game to quit 
+    					//on transition from title to game.
+    	}
+    }
+
+    public void render(Graphics g) 
+    {
+    	renderState(g);
+    }
+
+    public void cleanup() 
+    {
+    	
+    }
+}
