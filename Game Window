@@ -7,6 +7,7 @@ public class GameWindow extends Core{
 	
 	private static String name = "Game";
 	private static TitleMenu title = new TitleMenu();
+	private static PauseMenu pause = new PauseMenu();
 	private static Game game = new Game();
 	
 	public GameWindow(CoreSetup coreSetup) {
@@ -24,21 +25,24 @@ public class GameWindow extends Core{
 
     public void init() 
     {
-    	this.switchGameState(title);
+    	this.switchGameState(pause);
     }
 
     public void update() 
     {
-    	updateState();
-    	if(title.shouldGameStart())
+    	if(game.shouldGamePause())
+    	{
+    		this.switchGameState(pause);
+    	}
+    	if(title.shouldGameStart() || pause.shouldGameStart())
     	{
     		this.switchGameState(game);
     	}
-    	if(title.shouldGameQuit() || game.shouldGameQuit())
+    	if(pause.shouldGameQuit() || title.shouldGameQuit() || game.shouldGameQuit())
     	{
-    		//this.end(); //This code is causing game to quit 
-    					//on transition from title to game.
+    		this.end();
     	}
+    	updateState();
     }
 
     public void render(Graphics g) 
