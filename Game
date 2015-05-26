@@ -8,7 +8,8 @@ import com.radirius.mercury.scene.GameScene;
 
 public class Game extends GameState{
 	
-	private boolean gameQuit = false;
+	private boolean quitGame = false;
+	private boolean pauseGame = false;
 	private Rectangle rec = new Rectangle(690, 490, 100, 100);
 	private Player pc = new Player();
 	
@@ -17,15 +18,22 @@ public class Game extends GameState{
 	public void onEnter()
 	{
 		levelOne.add(pc);
+		//One thing helping with the game quit errors was stating that 
+		//the booleans are false in onEnter().
 	}
 	
 	public void update()
 	{
-		pc.update();
+		//TODO: Find what is causing run time errors/failure to recognize key input.
 		if(Input.keyClicked(Input.KEY_Q));
 		{
-			gameQuit = true;
+			quitGame = true;
 		}
+		if(Input.keyClicked(Input.KEY_P));
+		{
+			pauseGame = true;
+		}
+		pc.update(); //Calling levelOne.update() causes run time errors.
 	}
 	
 	public void render(Graphics g)
@@ -37,7 +45,12 @@ public class Game extends GameState{
 	
 	public boolean shouldGameQuit()
 	{
-		return gameQuit;
+		return quitGame;
+	}
+	
+	public boolean shouldGamePause()
+	{
+		return pauseGame;
 	}
 
 }
